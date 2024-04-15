@@ -6,6 +6,7 @@ import numpy as np
 
 dataset_df = pd.read_csv('dataset.csv').to_numpy()
 sounds_dataset = dataset_df[:, 0]
+sr = 0
 for i in range(len(sounds_dataset)):
     sounds_dataset[i], sr = librosa.load(f'Noisy-sounds/{sounds_dataset[i]}.wav')
 
@@ -82,7 +83,7 @@ class DenoisingAutoencoder(tf.keras.Model):
 
 
 # Define the hyperparameters
-epochs = 25
+epochs = 5
 batch_size = 32
 
 # Define the model
@@ -93,3 +94,5 @@ autoencoder.compile(optimizer='adam', loss='mse')  # Using Mean Squared Error lo
 
 # Train the model
 autoencoder.fit(X_train_good, y_train_good, epochs=epochs, batch_size=batch_size, validation_data=(X_test_good, y_test_good))
+
+test, sr = librosa.load(f'Noisy-sounds/Sound12.wav')
